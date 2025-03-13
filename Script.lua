@@ -13,7 +13,7 @@ local ESPTab = Window:CreateTab("ESP")
 local ServerTab = Window:CreateTab("Server")
 local MiscTab = Window:CreateTab("Misc")
 
--- Aura Kill (Instant Kill, Only NPCs, Ignores Players)
+-- Aura Kill (Instant Kill, Only NPCs, Adjustable Radius)
 local auraEnabled = false
 local auraRadius = 10
 
@@ -46,7 +46,7 @@ MainTab:CreateToggle({
     end
 })
 
--- Aimbot (Targets NPCs in Adjustable FOV Circle)
+-- Aimbot (Targets NPCs in FOV Circle)
 local aimbotEnabled = false
 local aimTarget = "Head"
 local fovSize = 100
@@ -126,10 +126,28 @@ MainTab:CreateToggle({
 
 -- ESP (Enable, Player ESP, Mob ESP, Item ESP)
 local ESPEnabled = false
+local PlayerESP = false
+local MobESP = false
+local ItemESP = false
 
 ESPTab:CreateToggle({
     Name = "ESP Enable",
     Callback = function(state) ESPEnabled = state end
+})
+
+ESPTab:CreateToggle({
+    Name = "Player ESP",
+    Callback = function(state) PlayerESP = state end
+})
+
+ESPTab:CreateToggle({
+    Name = "Mob ESP",
+    Callback = function(state) MobESP = state end
+})
+
+ESPTab:CreateToggle({
+    Name = "Item ESP",
+    Callback = function(state) ItemESP = state end
 })
 
 -- Server Hop & Rejoin
