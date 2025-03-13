@@ -18,24 +18,24 @@ local MainTab = Window:CreateTab("Main", 4483362458) -- Example icon ID
 local AuraKillEnabled = false
 local KillRadius = 10 -- Default radius
 
--- Function to check if an entity is an NPC
-local function isNPC(entity)
-   return entity:FindFirstChild("Humanoid") and not entity:FindFirstChildOfClass("Player")
+-- Function to check if an entity is NOT a player
+local function isKillable(entity)
+   return entity:FindFirstChild("Humanoid") and not game.Players:GetPlayerFromCharacter(entity) and entity:FindFirstChild("HumanoidRootPart")
 end
 
 -- Aura Kill Loop
 local function AuraKill()
    while AuraKillEnabled do
-      task.wait(0.2) -- Small delay to prevent lag
+      task.wait(0.2) -- Prevents lag
       local player = game.Players.LocalPlayer
       local character = player.Character
       if character and character:FindFirstChild("HumanoidRootPart") then
          local root = character.HumanoidRootPart
          for _, v in pairs(workspace:GetChildren()) do
-            if isNPC(v) and v:FindFirstChild("HumanoidRootPart") then
+            if isKillable(v) then
                local distance = (root.Position - v.HumanoidRootPart.Position).Magnitude
                if distance <= KillRadius then
-                  v.Humanoid.Health = 0 -- Instantly kill NPC
+                  v.Humanoid.Health = 0 -- Instantly kill entity
                end
             end
          end
@@ -50,7 +50,7 @@ MainTab:CreateToggle({
    Callback = function(value)
       AuraKillEnabled = value
       if AuraKillEnabled then
-         AuraKill()
+         task.spawn(AuraKill)
       end
    end
 })
