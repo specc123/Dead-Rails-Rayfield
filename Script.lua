@@ -55,14 +55,24 @@ MainTab:CreateToggle({
    end
 })
 
--- Radius Slider
-MainTab:CreateSlider({
-   Name = "Kill Radius",
+-- Custom Slider with Line and Circle
+local SliderSection = MainTab:CreateSection("Kill Radius")
+
+-- Create a UI Label for displaying the radius
+local RadiusLabel = MainTab:CreateParagraph({
+   Title = "Kill Radius: 10 Studs",
+   Content = "Adjust the radius with the slider below."
+})
+
+-- Create a draggable slider (visual line with circle)
+local Slider = MainTab:CreateSlider({
+   Name = " ",
    Min = 5,
    Max = 50,
    Increment = 1,
    CurrentValue = KillRadius,
    Callback = function(value)
       KillRadius = value
+      RadiusLabel:Set({Title = "Kill Radius: " .. value .. " Studs"})
    end
 })
